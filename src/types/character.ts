@@ -19,6 +19,10 @@ class Image {
     return `${this.path}/portrait_small.${this.extension}`;
   }
 
+  get landscapeMedium() {
+    return `${this.path}/landscape_medium.${this.extension}`;
+  }
+
   static fromJson(data: any) {
     return new Image(data.path, data.extension);
   }

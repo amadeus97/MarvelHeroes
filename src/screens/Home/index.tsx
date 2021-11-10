@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {
   FlatList,
   View,
@@ -12,6 +13,7 @@ import MarvelApi from '../../services/marvelApi';
 import Character from '../../types/character';
 
 const HomeScreen = () => {
+  const navigation = useNavigation<any>();
   const [data, setData] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,12 +32,16 @@ const HomeScreen = () => {
     setIsLoading(false);
   }
 
+  const navigateToHero = (hero: Character) =>
+    navigation.navigate('Details', {hero});
+
   function renderItem({item}: ListRenderItemInfo<Character>) {
     return (
       <ListItem
         id={item.id}
         name={item.name}
         thumbnail={item.thumbnail.portraitSmall}
+        onPress={() => navigateToHero(item)}
       />
     );
   }
