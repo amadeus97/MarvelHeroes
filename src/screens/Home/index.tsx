@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 import {
   FlatList,
   View,
@@ -11,6 +12,8 @@ import ListItem from '../../components/ListItem';
 
 import MarvelApi from '../../services/marvelApi';
 import Character from '../../types/character';
+import {useAppSelector} from '../../hooks';
+import {addFavorite, removeFavorite} from '../../store/actions';
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -20,6 +23,13 @@ const HomeScreen = () => {
   useEffect(() => {
     loadHeroes();
   }, []);
+
+  const dispatch = useDispatch();
+  const {favorites} = useAppSelector(state => state.heroesReducer);
+
+  const addToFavoriteList = (hero: Character) => dispatch(addFavorite(hero));
+  const removeFromFavoriteList = (hero: Character) =>
+    dispatch(removeFavorite(hero));
 
   async function loadHeroes() {
     try {
@@ -35,13 +45,29 @@ const HomeScreen = () => {
   const navigateToHero = (hero: Character) =>
     navigation.navigate('Details', {hero});
 
+  const isFavorite = (heroId: number) => {
+    if (favorites.filter((item: Character) => item.id === heroId).length > 0) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const toggleFavorite = (hero: Character) => {
+    if (isFavorite(hero.id)) {
+      removeFromFavoriteList(hero);
+    } else {
+      addToFavoriteList(hero);
+    }
+  };
+
   function renderItem({item}: ListRenderItemInfo<Character>) {
     return (
       <ListItem
-        id={item.id}
-        name={item.name}
-        thumbnail={item.thumbnail.portraitSmall}
+        hero={item}
         onPress={() => navigateToHero(item)}
+        isFavorite={isFavorite(item.id)}
+        onFavoritePress={toggleFavorite}
       />
     );
   }
