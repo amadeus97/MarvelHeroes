@@ -3,9 +3,9 @@ import {View, Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 
-import {NavigatorParamList} from '../../navigation';
+import {RootNavigatorParamList} from '../../navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<NavigatorParamList, 'Details'>;
+type Props = NativeStackScreenProps<RootNavigatorParamList, 'Details'>;
 
 const HeroDetailsScreen: React.FC<Props> = props => {
   const hero = props.route.params.hero;

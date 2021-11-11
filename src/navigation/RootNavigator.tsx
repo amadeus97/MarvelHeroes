@@ -1,23 +1,23 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import HomeScreen from '../screens/Home';
+import TabNavigator from './TabNavigator';
 import HeroDetailsScreen from '../screens/HeroDetails';
 import Character from '../types/character';
 
-export type NavigatorParamList = {
-  Home: undefined;
+export type RootNavigatorParamList = {
+  HomeTabs: undefined;
   Details: {hero: Character};
 };
 
-const Stack = createNativeStackNavigator<NavigatorParamList>();
+const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
-const Navigator = () => {
+const RootNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="HomeTabs">
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeTabs"
+        component={TabNavigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -29,4 +29,4 @@ const Navigator = () => {
   );
 };
 
-export default Navigator;
+export default RootNavigator;
