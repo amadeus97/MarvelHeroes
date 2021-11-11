@@ -1,7 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import CircleButton from './CircleButton';
 
 import Character, {getPortraitSmall} from '../types/character';
 
@@ -22,15 +23,12 @@ const ListItem = React.memo<ListItemProps>(
         />
         <View>
           <Label>{hero.name}</Label>
-          <ButtonContainer
-            style={{backgroundColor: isFavorite ? '#438EFF' : 'lightgrey'}}
-            onPress={() => onFavoritePress && onFavoritePress(hero)}>
-            <Icon
-              name={isFavorite ? 'bookmark-outline' : 'bookmark'}
-              color={isFavorite ? 'white' : '#64676D'}
-              size={24}
-            />
-          </ButtonContainer>
+          <CircleButton
+            color={isFavorite ? '#438EFF' : 'lightgrey'}
+            iconName={isFavorite ? 'bookmark-outline' : 'bookmark'}
+            iconColor={isFavorite ? 'white' : '#64676D'}
+            onPress={() => onFavoritePress && onFavoritePress(hero)}
+          />
         </View>
       </Container>
     );
@@ -53,17 +51,6 @@ const Label = styled.Text`
   color: black;
   font-size: 16px;
   font-weight: bold;
-`;
-
-const ButtonContainer = styled.TouchableOpacity`
-  flex-direction: row;
-  padding: 2px;
-  background-color: lightgray;
-  border-radius: 20px;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
 `;
 
 export default ListItem;
