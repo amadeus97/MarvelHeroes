@@ -5,7 +5,7 @@ import {View, FlatList, ListRenderItemInfo} from 'react-native';
 
 import ListItem from '../../components/ListItem';
 
-import Character, {getPortraitSmall} from '../../types/character';
+import Character from '../../types/character';
 import {useAppSelector} from '../../hooks';
 import {removeFavorite} from '../../store/actions';
 
