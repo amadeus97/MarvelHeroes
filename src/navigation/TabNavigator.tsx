@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from '../screens/Home';
+import FavoriteHeroes from '../screens/FavoriteHeroes';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,7 @@ const TabNavigator = () => {
             case 'Home':
               iconName = 'view-dashboard';
               break;
-            case 'BookmarksList':
+            case 'Favorites':
               iconName = 'bookmark-multiple-outline';
               break;
             default:
@@ -34,6 +35,11 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoriteHeroes}
         options={{headerShown: false}}
       />
     </Tab.Navigator>

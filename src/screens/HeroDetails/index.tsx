@@ -3,6 +3,7 @@ import {View, Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 
+import {getLandscapeMedium} from '../../types/character';
 import {RootNavigatorParamList} from '../../navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootNavigatorParamList, 'Details'>;
@@ -12,7 +13,7 @@ const HeroDetailsScreen: React.FC<Props> = props => {
 
   return (
     <View>
-      <HeroCoverImage source={{uri: hero.thumbnail.landscapeMedium}} />
+      <HeroCoverImage source={{uri: getLandscapeMedium(hero.thumbnail)}} />
       <Content>
         <Title>{hero.name}</Title>
         <Text>{hero.description || 'This character has no description'}</Text>

@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Character from '../types/character';
+import Character, {getPortraitSmall} from '../types/character';
 
 export type ListItemProps = {
   hero: Character;
@@ -18,7 +18,7 @@ const ListItem = React.memo<ListItemProps>(
       <Container onPress={() => onPress && onPress(hero.id)}>
         <Avatar
           style={{height: 70, width: 70}}
-          source={{uri: hero.thumbnail.portraitSmall}}
+          source={{uri: getPortraitSmall(hero.thumbnail)}}
         />
         <View>
           <Label>{hero.name}</Label>

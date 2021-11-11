@@ -15,15 +15,15 @@ export default class Character {
 class Image {
   constructor(public path: string, public extension: string) {}
 
-  get portraitSmall() {
-    return `${this.path}/portrait_small.${this.extension}`;
-  }
-
-  get landscapeMedium() {
-    return `${this.path}/landscape_medium.${this.extension}`;
-  }
-
   static fromJson(data: any) {
     return new Image(data.path, data.extension);
   }
+}
+
+export function getPortraitSmall(image: Image) {
+  return `${image.path}/portrait_small.${image.extension}`;
+}
+
+export function getLandscapeMedium(image: Image) {
+  return `${image.path}/landscape_medium.${image.extension}`;
 }
