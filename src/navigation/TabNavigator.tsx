@@ -21,6 +21,8 @@ const TabNavigator = () => {
             case 'Favorites':
               iconName = 'bookmark-multiple-outline';
               break;
+            case 'Search':
+              iconName = 'magnify';
             default:
               break;
           }
@@ -41,6 +43,12 @@ const TabNavigator = () => {
         name="Favorites"
         component={FavoriteHeroes}
         options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Search"
+        component={HomeScreen}
+        options={{headerShown: false}}
+        initialParams={{isSearching: true}}
       />
     </Tab.Navigator>
   );

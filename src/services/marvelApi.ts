@@ -23,8 +23,14 @@ export default class MarvelApi {
     return `${path}?ts=${ts}&apikey=${MARVEL_PUBLIC_KEY}&hash=${hash}`;
   }
 
-  static async getHeroes(offset?: number): Promise<[Character[], number]> {
-    const url = this._buildUrl('characters');
+  static async getHeroes(
+    offset?: number,
+    searchTerm?: string,
+  ): Promise<[Character[], number]> {
+    let url = this._buildUrl('characters');
+    if (searchTerm) {
+      url += `&nameStartsWith=${searchTerm}`;
+    }
     const result = await this._client.get(
       `${url}&limit=20&offset=${offset || 0}`,
     );

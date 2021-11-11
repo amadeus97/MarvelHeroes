@@ -1,41 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
+import {debounce} from 'lodash';
 import {
-  FlatList,
   View,
+  FlatList,
   ListRenderItemInfo,
   ActivityIndicator,
 } from 'react-native';
 
 import ListItem from '../../components/ListItem';
+import SearchInput from '../../components/SearchInput';
 
 import MarvelApi from '../../services/marvelApi';
 import Character from '../../types/character';
 import {useAppSelector} from '../../hooks';
 import {addFavorite, removeFavorite} from '../../store/actions';
 
-const HomeScreen = () => {
+const HomeScreen: React.FC<any> = props => {
+  const isSearching = !!props.route?.params?.isSearching;
+
+  const dispatch = useDispatch();
   const navigation = useNavigation<any>();
+
+  const [text, setText] = useState('');
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    loadHeroes();
-  }, []);
-
-  const dispatch = useDispatch();
   const {favorites} = useAppSelector(state => state.heroesReducer);
 
-  const addToFavoriteList = (hero: Character) => dispatch(addFavorite(hero));
-  const removeFromFavoriteList = (hero: Character) =>
-    dispatch(removeFavorite(hero));
+  const delayedQuery = useCallback(debounce(loadHeroes, 500), [text]);
 
   async function loadHeroes() {
+    if (isLoading) return;
     try {
       setIsLoading(true);
-      const [heroes, count] = await MarvelApi.getHeroes(offset);
+      const [heroes, count] = await MarvelApi.getHeroes(offset, text);
       setData([...data, ...heroes]);
       setOffset(offset + count);
     } catch (e) {
@@ -43,6 +43,22 @@ const HomeScreen = () => {
     }
     setIsLoading(false);
   }
+
+  useEffect(() => {
+    if (!isSearching) {
+      loadHeroes();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSearching && text != '') {
+      setData([]);
+      setOffset(0);
+      delayedQuery();
+    }
+
+    return delayedQuery.cancel;
+  }, [text, delayedQuery]);
 
   const navigateToHero = (hero: Character) =>
     navigation.navigate('Details', {hero});
@@ -54,6 +70,10 @@ const HomeScreen = () => {
 
     return false;
   };
+
+  const addToFavoriteList = (hero: Character) => dispatch(addFavorite(hero));
+  const removeFromFavoriteList = (hero: Character) =>
+    dispatch(removeFavorite(hero));
 
   const toggleFavorite = (hero: Character) => {
     if (isFavorite(hero.id)) {
@@ -103,20 +123,25 @@ const HomeScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      <FlatList
-        style={{paddingBottom: 10}}
-        data={data}
-        ListFooterComponent={renderFooter}
-        renderItem={renderItem}
-        keyExtractor={(item: Character) => item.id.toString()}
-        ItemSeparatorComponent={renderSeparator}
-        onEndReached={() => {
-          if (data.length != 1) {
-            loadHeroes();
-          }
-        }}
-        onEndReachedThreshold={0.3}
-      />
+      {isSearching && (
+        <SearchInput placeholder="Search Hero" onChange={setText} />
+      )}
+      <View>
+        <FlatList
+          style={{paddingBottom: 10}}
+          data={data}
+          ListFooterComponent={renderFooter}
+          renderItem={renderItem}
+          keyExtractor={(item: Character) => item.id.toString()}
+          ItemSeparatorComponent={renderSeparator}
+          onEndReached={() => {
+            if (data.length != 1) {
+              loadHeroes();
+            }
+          }}
+          onEndReachedThreshold={0.3}
+        />
+      </View>
     </View>
   );
 };
