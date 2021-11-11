@@ -7,13 +7,20 @@ type Props = {
   iconName?: string;
   iconColor?: ColorValue;
   color?: ColorValue;
+  isLarge?: boolean;
   onPress?: () => void;
 };
 
 const CircleButton: React.FC<Props> = props => {
+  const size = props.isLarge ? 60 : 40;
+
   return (
     <ButtonContainer
-      style={{backgroundColor: props.color || 'lightgray'}}
+      style={{
+        backgroundColor: props.color || 'lightgray',
+        height: size,
+        width: size,
+      }}
       onPress={props.onPress}>
       <Icon
         name={props.iconName || 'bookmark'}
@@ -28,11 +35,9 @@ const ButtonContainer = styled.TouchableOpacity`
   flex-direction: row;
   padding: 2px;
   background-color: lightgray;
-  border-radius: 20px;
+  border-radius: 60px;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  width: 40px;
 `;
 
 export default CircleButton;
