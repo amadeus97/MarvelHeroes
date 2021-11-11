@@ -9,8 +9,6 @@ export default class MarvelApi {
     baseURL: 'http://gateway.marvel.com/v1/public',
   });
 
-  private static _offset = 0;
-
   private static _getHash(): [number, string] {
     const timestamp = Date.now();
     const encodedString = md5(
@@ -25,17 +23,20 @@ export default class MarvelApi {
     return `${path}?ts=${ts}&apikey=${MARVEL_PUBLIC_KEY}&hash=${hash}`;
   }
 
-  static async getHeroes(): Promise<Character[]> {
+  static async getHeroes(offset?: number): Promise<[Character[], number]> {
     const url = this._buildUrl('characters');
     const result = await this._client.get(
-      `${url}&limit=20&offset=${this._offset}`,
+      `${url}&limit=20&offset=${offset || 0}`,
     );
 
     if (result.status == 200) {
       const data = result.data.data;
-      this._offset += data.count;
-      return (data.results as any[]).map(item => Character.fromJson(item));
+      const heroes = (data.results as any[]).map(item =>
+        Character.fromJson(item),
+      );
+
+      return [heroes, data.count];
     }
-    return [];
+    return [[], 0];
   }
 }

@@ -17,6 +17,7 @@ import {addFavorite, removeFavorite} from '../../store/actions';
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
+  const [offset, setOffset] = useState(0);
   const [data, setData] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,8 +35,9 @@ const HomeScreen = () => {
   async function loadHeroes() {
     try {
       setIsLoading(true);
-      const heroes = await MarvelApi.getHeroes();
+      const [heroes, count] = await MarvelApi.getHeroes(offset);
       setData([...data, ...heroes]);
+      setOffset(offset + count);
     } catch (e) {
       console.log(e);
     }
