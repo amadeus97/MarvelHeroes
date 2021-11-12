@@ -4,6 +4,10 @@ import md5 from 'md5';
 
 import Character from '../types/character';
 
+type Total = number;
+type Offset = number;
+type HeoresResponse = [Character[], Total, Offset] | undefined;
+
 export default class MarvelApi {
   private static _client = axios.create({
     baseURL: 'http://gateway.marvel.com/v1/public',
@@ -26,7 +30,7 @@ export default class MarvelApi {
   static async getHeroes(
     offset?: number,
     searchTerm?: string,
-  ): Promise<[Character[], number]> {
+  ): Promise<HeoresResponse> {
     let url = this._buildUrl('characters');
     if (searchTerm) {
       url += `&nameStartsWith=${searchTerm}`;
@@ -41,8 +45,7 @@ export default class MarvelApi {
         Character.fromJson(item),
       );
 
-      return [heroes, data.count];
+      return [heroes, data.total, data.offset];
     }
-    return [[], 0];
   }
 }
