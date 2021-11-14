@@ -1,7 +1,14 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {View, FlatList, Share, Alert, ListRenderItemInfo} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  FlatList,
+  Share,
+  Alert,
+  ListRenderItemInfo,
+} from 'react-native';
 
 import ListItem from '../../components/ListItem';
 
@@ -72,7 +79,7 @@ const FavoriteHeroes = () => {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <FlatList
         style={{paddingBottom: 10}}
         data={favorites}
@@ -83,7 +90,7 @@ const FavoriteHeroes = () => {
       <View style={{position: 'absolute', bottom: 16, right: 16}}>
         <CircleButton isLarge iconName="share-variant" onPress={handleShare} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

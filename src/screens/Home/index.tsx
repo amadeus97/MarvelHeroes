@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Button,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 
 import ListItem from '../../components/ListItem';
@@ -67,6 +68,7 @@ const HomeScreen: React.FC<any> = props => {
         showError('Try again later.');
       }
     } catch (e) {
+      console.log('caiu aqui');
       showError('Try again later.');
     }
   }
@@ -196,7 +198,7 @@ const HomeScreen: React.FC<any> = props => {
   }, [isLoading, pagination, hasError]);
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       {isSearching && (
         <SearchInput placeholder="Search Hero" onChange={setText} />
       )}
@@ -210,7 +212,7 @@ const HomeScreen: React.FC<any> = props => {
           style={{paddingBottom: 10}}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
