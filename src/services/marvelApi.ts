@@ -10,7 +10,7 @@ type HeoresResponse = [Character[], Total, Offset] | undefined;
 
 export default class MarvelApi {
   private static _client = axios.create({
-    baseURL: 'http://gateway.marvel.com/v1/public',
+    baseURL: 'https://gateway.marvel.com/v1/public',
   });
 
   private static _getHash(): [number, string] {
