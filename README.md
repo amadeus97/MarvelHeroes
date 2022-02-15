@@ -1,6 +1,6 @@
-# MeliuzTest
+# MarvelHeroes
 
-Teste React Native para vaga de Desenvolvedor Mobile Méliuz.
+Com esse app você pode ver informações sobre os heróis da marvel.
 
 ## Instalação
 1. Clone este projeto
